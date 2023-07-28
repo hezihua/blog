@@ -1,5 +1,7 @@
 package conf
 
+import "fmt"
+
 func NewConfig() *Config {
 	return &Config{
 		Auth: newAuth(),
@@ -20,4 +22,11 @@ func newAuth() *Auth {
 type Auth struct {
 	Username string `toml:"username" env:"AUTH_USERNAME"`
 	Password string `toml:"password" env:"AUTH_PASSWORD"`
+}
+
+func (a *Auth) Validate(username string, password string) error {
+	if !(a.Username == username && a.Password == password) {
+		return fmt.Errorf("username or password error")
+	}
+	return nil
 }

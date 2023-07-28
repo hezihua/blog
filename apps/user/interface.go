@@ -1,14 +1,25 @@
 package user
 
-import "context"
+import (
+	"context"
+	"net/http"
+)
 
 func NewLoginRequest() *LoginRequest {
 	return &LoginRequest{}
 }
 
+func NewLoginRequestFromBasicAuth(r *http.Request) *LoginRequest {
+	user, pass, _ := r.BasicAuth()
+	return &LoginRequest{
+		Username: user,
+		Password: pass,
+	}
+}
+
 type LoginRequest struct {
-	username string
-	password string
+	Username string
+	Password string
 }
 
 func NewLogoutRequest() *LogoutRequest {
@@ -16,7 +27,7 @@ func NewLogoutRequest() *LogoutRequest {
 }
 
 type LogoutRequest struct {
- 
+	Username string `json:"username"`
 }
 
 type Service interface {
