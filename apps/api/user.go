@@ -9,7 +9,7 @@ import (
 
 func (h *Handler) Login(c *gin.Context) {
 	req := user.NewLoginRequestFromBasicAuth(c.Request)
-	sess, err := h.svc.Login(c.Request.Context(), req)
+	_, err := h.svc.Login(c.Request.Context(), req)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": err.Error(),
@@ -31,7 +31,7 @@ func (h *Handler) Logout(c *gin.Context) {
 			"code": 	http.StatusBadRequest,
 		})
 	}
-	sess, err := h.svc.Logout(c.Request.Context(), req)
+  err = h.svc.Logout(c.Request.Context(), req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
@@ -41,5 +41,5 @@ func (h *Handler) Logout(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "logout success",
 		"code":    http.StatusOK,
-	}
+	})
 }
