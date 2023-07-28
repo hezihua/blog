@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) Login(c *gin.Context) {
+func (h *handler) Login(c *gin.Context) {
 	req := user.NewLoginRequestFromBasicAuth(c.Request)
 	_, err := h.svc.Login(c.Request.Context(), req)
 	if err != nil {
@@ -22,7 +22,7 @@ func (h *Handler) Login(c *gin.Context) {
 	})
 }
 
-func (h *Handler) Logout(c *gin.Context) {
+func (h *handler) Logout(c *gin.Context) {
 	req := user.NewLogoutRequest()
 	err := c.BindJSON(req)
 	if err != nil {

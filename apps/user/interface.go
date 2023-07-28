@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+var (
+	AppName = "user"
+)
+
 func NewLoginRequest() *LoginRequest {
 	return &LoginRequest{}
 }

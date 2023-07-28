@@ -2,8 +2,8 @@ package impl_test
 
 import (
 	"context"
+	"hezihua/apps"
 	"hezihua/apps/user"
-	"hezihua/apps/user/impl"
 	"hezihua/test/tools"
 	"os"
 	"testing"
@@ -38,5 +38,6 @@ func TestLogout(t *testing.T) {
 
 func init (){
 	tools.DevelopmentSet()
-	svc = impl.NewImpl()
+	svc = apps.GetInternalApp(user.AppName).(user.Service)
 }
+

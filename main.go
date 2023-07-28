@@ -1,9 +1,10 @@
 package main
 
 import (
-	"hezihua/apps/api"
-	"hezihua/apps/user/impl"
+	"hezihua/apps"
 	"hezihua/conf"
+
+	_ "hezihua/apps/all"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,14 +12,27 @@ import (
 func main() {
 	conf.LoadConfigFromToml("etc/config.toml")
 
-	usrSvc := impl.NewImpl()
+	// usrSvc := impl.NewImpl()
+	err := apps.InitApps()
+	if err != nil {
+		panic(err)
+	}
 
 
-	userAPI := api.NewHandler(usrSvc)
 
+	// userAPI := api.NewHandler(usrSvc)
+
+	
+
+	
+  // v1 := server.Group("/vblog/api/v1")
+	// userAPI.Registry(v1)
 	server := gin.Default()
-  v1 := server.Group("/vblog/api/v1")
-	userAPI.Registry(v1)
+	v1 := server.Group("/vblog/api/v1")
+	err = apps.InitHttpApps(v1)
+	if err != nil {
+		panic(err)
+	}
 
 	if err := server.Run(":8080"); err != nil {
 		panic(err)
