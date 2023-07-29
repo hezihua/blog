@@ -15,6 +15,7 @@ func (h *handler) Login(c *gin.Context) {
 			"message": err.Error(),
 			"code": 	http.StatusUnauthorized,
 		})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"message": "success",
@@ -22,7 +23,7 @@ func (h *handler) Login(c *gin.Context) {
 	})
 }
 
-func (h *handler) Logout(c *gin.Context) {
+func (h *handler) Logout(c *gin.Context) {	
 	req := user.NewLogoutRequest()
 	err := c.BindJSON(req)
 	if err != nil {

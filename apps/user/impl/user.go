@@ -2,12 +2,10 @@ package impl
 
 import (
 	"context"
-	"fmt"
 	"hezihua/apps/user"
 )
 
 func (i *impl) Login(ctx context.Context, req *user.LoginRequest) (*user.Session, error) {
-	fmt.Println(i.Auth)
 	if err := i.Auth.Validate(req.Username, req.Password); err != nil {
 		return nil, err
 	}

@@ -34,7 +34,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := server.Run(":8080"); err != nil {
+	if err := server.Run(":8050"); err != nil {
 		panic(err)
 	}
 }
