@@ -68,9 +68,30 @@ func (s *BlogSet) AddItem(item *Blog) {
 	s.Items = append(s.Items, item)
 }
 
+func NewDescribeBlogRequest(id int) *DescribeBlogRequest {
+	return &DescribeBlogRequest{
+		Id: id,
+	}
+}
+
 type DescribeBlogRequest struct {
 	Id int `json:"id"`
 
+}
+
+func NewPutUpdate(id int, req *CreateBlogRequest) *UpdateBlogRequest {
+	return NewUpdateBlogRequest(PUT, id, req)
+}
+func NewPatchUpdate(id int, req *CreateBlogRequest) *UpdateBlogRequest {
+	return NewUpdateBlogRequest(PATCH, id, req)
+}
+
+func NewUpdateBlogRequest (mode UpdateMode,id int, req *CreateBlogRequest) *UpdateBlogRequest {
+	return &UpdateBlogRequest{
+		UpdateMode: mode,
+		Id: id,
+		CreateBlogRequest: req,
+	}
 }
 
 type UpdateBlogRequest struct {
@@ -79,6 +100,12 @@ type UpdateBlogRequest struct {
 	*CreateBlogRequest
 }
 
-type DeleteBlogRequest struct {
+func NewDeleteBlogRequest(id int) *DeleteBlogRequest {
+	return &DeleteBlogRequest{
+		Id: id,
+	}
+}
 
+type DeleteBlogRequest struct {
+	Id int `json:"id"`
 }

@@ -3,6 +3,8 @@ package impl
 import (
 	"context"
 	"hezihua/apps/blog"
+
+	"dario.cat/mergo"
 )
 
 func (i *impl) CreateBlog(ctx context.Context, req *blog.CreateBlogRequest) (*blog.Blog, error) {
@@ -48,6 +50,7 @@ func (i *impl) QueryBlog(ctx context.Context, req *blog.QueryBlogRequest) (*blog
 
 
 	err := query.
+		Order("created_at desc").
 		Offset(int(req.Offset())).
 		Limit(int(req.PageSize)).
 		Find(&set.Items).
@@ -68,13 +71,64 @@ func (i *impl) QueryBlog(ctx context.Context, req *blog.QueryBlogRequest) (*blog
 }
 
 
-func (i *impl) DescribeBlog(context.Context, *blog.DescribeBlogRequest) (*blog.Blog, error) {
-	return nil, nil
+func (i *impl) DescribeBlog(ctx context.Context, req *blog.DescribeBlogRequest) (*blog.Blog, error) {
+	query := i.db.Table("blogs").WithContext(ctx)
+	ins := blog.NewBlog(blog.NewCreateBlogRequest())
+	err := query.Where("id = ?", req.Id).First(ins).Error
+	if err != nil {
+	  return nil, err	
+	}
+	return ins, nil
 }
 func (i *impl) UpdateBlog(ctx context.Context, req *blog.UpdateBlogRequest) (*blog.Blog, error) {
-	return nil, nil
+	ins, err := i.DescribeBlog(ctx, blog.NewDescribeBlogRequest(req.Id))
+	if err != nil {
+		return nil, err
+	}
+	switch req.UpdateMode {
+		case blog.PUT:
+			ins.CreateBlogRequest = req.CreateBlogRequest
+		case blog.PATCH:
+			// if req.Author != "" {
+			// 	ins.Author = req.Author
+			// }
+			// if req.Title != "" {
+			// 	ins.Title
+			// }
+			mergo.MergeWithOverwrite(ins.CreateBlogRequest, req.CreateBlogRequest)
+	}
+	if err := ins.CreateBlogRequest.Validate(); err != nil {
+		return nil, err
+	}
+	err = i.db.
+	Table("blogs").
+	WithContext(ctx).
+	Where("id = ?", req.Id).
+	Updates(ins).Error
+	if err != nil {
+		return nil, err
+	}
+	return ins, nil
 }
 func (i *impl) DeleteBlog(ctx context.Context, req *blog.DeleteBlogRequest) (*blog.Blog, error) {
-	return nil, nil
+	ins, err := i.DescribeBlog(ctx, blog.NewDescribeBlogRequest(req.Id))
+	if err != nil {
+		return nil, err
+	}
+
+	err = i.db.
+		Table("blogs").
+		WithContext(ctx).
+		// Where("id = ?", req.Id).
+		Delete(&blog.Blog{Id: int64(req.Id)}).
+		Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	
+
+	return ins, nil
 }
 

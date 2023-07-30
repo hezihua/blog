@@ -40,6 +40,6 @@ var (
 type UpdateMode string
 
 const (
-	PATCH = "patch"
-	PUT   = "put"
+	PATCH UpdateMode = "patch"
+	PUT UpdateMode  = "put"
 )
