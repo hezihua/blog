@@ -1,20 +1,25 @@
 package impl
 
 import (
-	"fmt"
 	"hezihua/apps"
 	"hezihua/apps/blog"
+	"hezihua/apps/tag"
+	"hezihua/conf"
+
+	"gorm.io/gorm"
 )
 
 type impl struct {
-	blog blog.Service
+	tag tag.Service
+	// 连接池
+	db *gorm.DB
 }
 
 
 func (i *impl) Init() error {
-	fmt.Println(blog.AppName)
-	fmt.Println(apps.GetInternalApp(blog.AppName))
-	i.blog = apps.GetInternalApp(blog.AppName).(blog.Service)
+	i.tag = apps.GetInternalApp(tag.AppName).(tag.Service)
+
+	i.db = conf.C().Mysql.ORM().Debug()
 	return nil
 }
 

@@ -14,13 +14,33 @@ var (
 )
 
 func TestCreateBlog(t *testing.T) {
-	ins, err := impl.CreateBlog(ctx, &blog.CreateBlogRequest{})
+	req := blog.NewCreateBlogRequest()
+	req.Author = "author"
+	req.Title = "title"
+	req.Content = "content"
+	req.Summary = "summary"
+	ins, err := impl.CreateBlog(ctx, req)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	t.Log(ins)
 }
+
+func TestQueryBlog(t *testing.T) {
+	req := blog.NewQueryBlogRequest()
+	// req.Keywords = "title"
+	// req.Status = blog.StatusPublished
+	set, err := impl.QueryBlog(ctx, req)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Log(set)
+}
+
+
+
 
 func init() {
 	tools.DevelopmentSet()

@@ -19,16 +19,30 @@ type Service interface {
 
 }
 
+func NewCreateBlogRequest() *CreateBlogRequest {
+	return &CreateBlogRequest{
+		Status: StatusDraft,
+	}
+}
 
 type CreateBlogRequest struct {
-  Title string `json:"title"`
-	Author string `json:"author"`
-	Content string `json:"content"`
-	Summary string `json:"summary"`
+  Title string `json:"title" validate:"required"`
+	Author string `json:"author" validate:"required"`
+	Content string `json:"content" validate:"required"`
+	Summary string `json:"summary" validate:"required"`
 	Status Status `json:"status"`
 }
 
+func (req *QueryBlogRequest) Offset() int64 {
+	return int64(req.PageNumber - 1) * int64(req.PageSize)
+}
 
+func NewQueryBlogRequest() *QueryBlogRequest {
+	return &QueryBlogRequest{
+		PageSize: 10,
+		PageNumber: 1,
+	}
+}
 
 type QueryBlogRequest struct {
 	PageSize uint `json:"page_size"`
@@ -36,7 +50,13 @@ type QueryBlogRequest struct {
 	Keywords string `json:"keywords"`
 	// 这里传指针
 	Status *Status `json:"status"`
+  Author string `json:"author"`
+}
 
+func NewBlogSet() *BlogSet {
+	return &BlogSet{
+		Items: []*Blog{},
+	}
 }
 
 type BlogSet struct {

@@ -2,18 +2,19 @@ package impl
 
 import (
 	"hezihua/apps"
+	"hezihua/apps/blog"
 	"hezihua/apps/tag"
 )
 
 
 
 type impl struct {
-	tag tag.Service
+	blog blog.Service
 }
 
 // 注入依赖
 func (i *impl) Init() error {
-	i.tag = apps.GetInternalApp(tag.AppName).(tag.Service)
+	i.blog = apps.GetInternalApp(blog.AppName).(blog.Service)
 	return nil
 }
 
