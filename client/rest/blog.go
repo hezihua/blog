@@ -7,6 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
+
+
 func (c *Client) CreateBlog(ctx context.Context, in *blog.CreateBlogRequest) (
 	*blog.Blog, error) {
 		// resp, _ := http.Post("http://localhost:8080/api/v1/blog", "application/json", req)

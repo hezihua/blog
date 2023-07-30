@@ -9,7 +9,7 @@ import (
 
 func (h *handler) Login(c *gin.Context) {
 	req := user.NewLoginRequestFromBasicAuth(c.Request)
-	_, err := h.svc.Login(c.Request.Context(), req)
+	sess, err := h.svc.Login(c.Request.Context(), req)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": err.Error(),
@@ -18,7 +18,7 @@ func (h *handler) Login(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"message": "success",
+		"message": sess,
 		"code":    http.StatusOK,
 	})
 }

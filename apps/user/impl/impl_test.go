@@ -16,10 +16,18 @@ var (
 
 
 func TestLogin(t *testing.T) {
+	username := os.Getenv("AUTH_USERNAME")
+	session := os.Getenv("AUTH_SESSION")
 	req := user.NewLoginRequest()
-	req.Username = os.Getenv("AUTH_USERNAME")
+	req.Username = username
 	req.Password = os.Getenv("AUTH_PASSWORD")
 	ins, err := svc.Login(ctx, req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	checkreq := user.NewCheckIsLoginRequest(username, session)
+
+	err = svc.CheckIsLogin(ctx, checkreq)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -31,6 +39,16 @@ func TestLogout(t *testing.T) {
 	req := user.NewLogoutRequest()
 	req.Username = os.Getenv("AUTH_USERNAME")
 	err := svc.Logout(ctx, req)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestIsLogin(t *testing.T) {
+	username := os.Getenv("AUTH_USERNAME")
+	session := os.Getenv("AUTH_SESSION")
+	req := user.NewCheckIsLoginRequest(username, session)
+	err := svc.CheckIsLogin(ctx, req)
 	if err != nil {
 		t.Fatal(err)
 	}

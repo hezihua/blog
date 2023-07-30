@@ -8,6 +8,6 @@ func NewSession(username, sess string) *Session {
 }
 
 type Session struct {
-	Username string
-	Id       string
+	Username string `json:"username"`
+	Id       string `json:"session"`
 }
