@@ -3,7 +3,7 @@ package blog
 import "context"
 
 var (
-	AppName = "blog"
+	AppName = "blogs"
 )
 
 type Service interface {
