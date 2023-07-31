@@ -28,7 +28,7 @@ func TestCreateBlog(t *testing.T) {
 }
 
 func TestDescribeBlog(t *testing.T) {
-	req := blog.NewDescribeBlogRequest(3)
+	req := blog.NewDescribeBlogRequest(1)
 	ins, err := impl.DescribeBlog(ctx, req)
 	if err != nil {
 		t.Fatal(err)

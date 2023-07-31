@@ -2,6 +2,7 @@ package blog
 
 import (
 	"encoding/json"
+	"hezihua/apps/tag"
 	"hezihua/validator"
 	"time"
 )
@@ -22,6 +23,7 @@ type Blog struct {
 	PulishedAt int64 `json:"pulished_at"`
 	UpdatedAt int64 `json:"updated_at"`
 	*CreateBlogRequest
+	Tags []*tag.Tag `json:"tags"`
 }
 
 func (b *Blog) String() string {

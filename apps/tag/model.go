@@ -38,7 +38,7 @@ func NewTag (req *CreateTagRequest) (*Tag, error) {
 		return nil, err
 	}
 	h := fnv.New32a()
-	_, err := h.Write([]byte(fmt.Sprintf("%s.%s.%d", req.Key, req.Value, req.BlogId)))
+	_, err := h.Write([]byte(fmt.Sprintf("%d.%s.%s", req.BlogId, req.Key, req.Value)))
 	if err != nil {
 		panic(err)
 	}

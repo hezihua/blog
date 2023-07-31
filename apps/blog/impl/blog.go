@@ -3,6 +3,7 @@ package impl
 import (
 	"context"
 	"hezihua/apps/blog"
+	"hezihua/apps/tag"
 
 	"dario.cat/mergo"
 )
@@ -60,6 +61,21 @@ func (i *impl) QueryBlog(ctx context.Context, req *blog.QueryBlogRequest) (*blog
 		return nil, err
 	}
 
+	// 为每个博客查询标签
+
+	tagReq := tag.NewQueryTagRequest()	
+	// TODO 批处理
+	for index := range set.Items {
+		item := set.Items[index]
+		ts, err := i.tag.QueryTag(ctx, tagReq)
+		if err != nil {
+			return nil, err
+		}
+		item.Tags = ts.Items
+	}
+
+	
+
 	err = query.Count(&set.Total).Error
 
 	if err != nil {
@@ -75,6 +91,13 @@ func (i *impl) DescribeBlog(ctx context.Context, req *blog.DescribeBlogRequest) 
 	query := i.db.Table("blogs").WithContext(ctx)
 	ins := blog.NewBlog(blog.NewCreateBlogRequest())
 	err := query.Where("id = ?", req.Id).First(ins).Error
+	tagReq := tag.NewQueryTagRequest()	
+	tagReq.Add(int(ins.Id))
+	ts, err := i.tag.QueryTag(ctx, tagReq)
+	if err != nil {
+		return nil, err
+	}
+	ins.Tags = ts.Items
 	if err != nil {
 	  return nil, err	
 	}

@@ -5,6 +5,15 @@ import (
 	"strings"
 )
 
+func ParseStatusFromString(status string) (*Status, error) {
+	for k, v := range StatusValueMap {
+		if v == status {
+			return &k, nil
+		}
+	}
+	return nil, fmt.Errorf("no support %s", status)
+}
+
 type Status int8
 
 func (s *Status) UnmarshalJSON(data []byte) error {

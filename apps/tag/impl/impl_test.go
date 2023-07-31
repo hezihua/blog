@@ -16,7 +16,7 @@ var (
 
 
 func TestCreateTag(t *testing.T) {
-	req := tag.NewCreateTagRequest("分类", "go", 1)
+	req := tag.NewCreateTagRequest("分类", "java", 1)
 	ins, err := impl.CreateTag(ctx, req)	
 	if err != nil {
 		t.Fatal(err)

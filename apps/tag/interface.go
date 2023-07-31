@@ -3,7 +3,7 @@ package tag
 import "context"
 
 var (
-	AppName = "tag"
+	AppName = "tags"
 )
 type Service interface {
 	CreateTag(context.Context, *CreateTagRequest) (*Tag, error)
@@ -17,6 +17,10 @@ func NewCreateTagRequest(key, value string, blogId int) *CreateTagRequest {
 		Value: value,
 		BlogId: blogId,
 	}
+}
+
+func NewDefaultCreateTagRequest() *CreateTagRequest {
+	return &CreateTagRequest{}
 }
 
 type CreateTagRequest struct {

@@ -1,6 +1,11 @@
 package blog
 
-import "context"
+import (
+	"context"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+)
 
 var (
 	AppName = "blogs"
@@ -45,12 +50,39 @@ func NewQueryBlogRequest() *QueryBlogRequest {
 }
 
 type QueryBlogRequest struct {
-	PageSize uint `json:"page_size"`
-	PageNumber uint `json:"page_num"`
+	PageSize int `json:"page_size"`
+	PageNumber int `json:"page_number"`
 	Keywords string `json:"keywords"`
 	// 这里传指针
 	Status *Status `json:"status"`
   Author string `json:"author"`
+}
+
+func NewQueryBlogRequestFromGin (c *gin.Context) (*QueryBlogRequest, error){
+	req := NewQueryBlogRequest()
+
+	ps := c.Query("page_size")
+	pn := c.Query("page_number")
+	if ps != "" {
+		req.PageSize, _ = strconv.Atoi(ps)
+	}
+	if pn != "" {
+		req.PageNumber, _ = strconv.Atoi(pn)
+	}
+	
+	
+	req.Author = c.Query("author")
+	req.Keywords = c.Query("keywords")
+	statusStr := c.Query("status")
+
+	if statusStr != "" {
+		status, err := ParseStatusFromString(statusStr)
+		if err != nil { 
+			return nil, err
+		}
+		req.Status = status
+	}
+	return req, nil
 }
 
 func NewBlogSet() *BlogSet {
