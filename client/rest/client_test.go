@@ -28,13 +28,15 @@ func TestCreateBlog(t *testing.T) {
 	client.CreateBlog(ctx, req)
 }
 
-// func TestLogin(t *testing.T) {
-// 	err := client.Login() 
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
-//   t.Log(client.Session())
-// }
+func TestQueryBlog(t *testing.T) {
+	req := blog.NewQueryBlogRequest()
+
+	ins, err := client.QueryBlog(ctx, req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fmt.Println(ins)
+}
 
 
 

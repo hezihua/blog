@@ -1,40 +1,43 @@
 package main
 
 import (
-	"hezihua/apps"
-	"hezihua/conf"
-
 	_ "hezihua/apps/all"
+	"hezihua/cmd"
 
-	"github.com/gin-gonic/gin"
+	"github.com/spf13/cobra"
 )
 
+// func main() {
+// 	conf.LoadConfigFromToml("etc/config.toml")
+
+// 	// usrSvc := impl.NewImpl()
+// 	err := apps.InitApps()
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+//   // arg0 := flag.Args()[0]
+// 	// flag.Parse()
+
+// 	// userAPI := api.NewHandler(usrSvc)
+
+//   // v1 := server.Group("/vblog/api/v1")
+// 	// userAPI.Registry(v1)
+// 	server := gin.Default()
+// 	v1 := server.Group("/vblog/api/v1")
+// 	err = apps.InitHttpApps(v1)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	if err := server.Run(":8050"); err != nil {
+// 		panic(err)
+// 	}
+// }
+
+
 func main() {
-	conf.LoadConfigFromToml("etc/config.toml")
+	err := cmd.RootCmd.Execute()
+	cobra.CheckErr(err)
 
-	// usrSvc := impl.NewImpl()
-	err := apps.InitApps()
-	if err != nil {
-		panic(err)
-	}
-
-
-
-	// userAPI := api.NewHandler(usrSvc)
-
-	
-
-	
-  // v1 := server.Group("/vblog/api/v1")
-	// userAPI.Registry(v1)
-	server := gin.Default()
-	v1 := server.Group("/vblog/api/v1")
-	err = apps.InitHttpApps(v1)
-	if err != nil {
-		panic(err)
-	}
-
-	if err := server.Run(":8050"); err != nil {
-		panic(err)
-	}
 }
