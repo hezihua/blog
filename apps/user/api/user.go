@@ -17,6 +17,12 @@ func (h *handler) Login(c *gin.Context) {
 		})
 		return
 	}
+
+	// 设置cookie
+	c.SetCookie("session", sess.Id, 3600, "", "", false, true)
+	c.SetCookie("username", sess.Username, 3600, "", "", false, true)
+
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": sess,
 		"code":    http.StatusOK,
